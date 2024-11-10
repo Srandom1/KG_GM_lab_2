@@ -8,12 +8,10 @@ public class Main extends JFrame {
     final static int FORM_WIDTH = 700;
     final static int FORM_HEIGHT = 700;
 
+
     Main() {
         setSize(FORM_WIDTH, FORM_HEIGHT);
-
-
         setPreferredSize(new Dimension(FORM_WIDTH, FORM_HEIGHT));
-
         setVisible(true);
     }
 
@@ -22,16 +20,16 @@ public class Main extends JFrame {
         int y = y1;
         int Dx = x2 - x1;
         int Dy = y2 - y1;
-        int e = 2 * Dy - Dx;
+        int d = 2 * Dy - Dx;
         graphics.setPaint(Color.black);
         for (int i = 1; i <= Dx; i++)
         {
             graphics.fillRect(x, y, 1, 1);
-            if (e >= 0) {
+            if (d >= 0) {
                 y++;
-                e += -2 * Dx + 2 * Dy;
+                d += -2 * Dx + 2 * Dy;
             } else
-                e += 2 * Dy;
+                d += 2 * Dy;
             x++;
         }
     }
