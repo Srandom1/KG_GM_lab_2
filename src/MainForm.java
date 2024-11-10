@@ -6,17 +6,17 @@ import java.awt.event.MouseEvent;
 public class MainForm extends JFrame {
     final static int Form_Wight = 600;
     final static int Form_Hight = 500;
-    Integer x1, x2, y1, y2; // Используем Integer для того, чтобы можно было установить null
+    Integer x1, x2, y1, y2;
 
     public MainForm() {
         setSize(Form_Wight, Form_Hight);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-        x1 = null; y1 = null; // Инициализация значениями null
-        x2 = null; y2 = null;
+        reset_coordinates();
 
         addMouseListener(new MouseAdapter() {
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
@@ -51,64 +51,35 @@ public class MainForm extends JFrame {
 
 
     void drawBrez(Graphics graphics, int I1, int J1, int I2, int J2) {
-        int d, delta1, delta2;
-        int i, j;
-        int dI, dJ;
-        int temp;
+        int dI = Math.abs(I2 - I1);
+        int dJ = Math.abs(J2 - J1);
+        int directionX = I1 < I2 ? 1 : -1;
+        int directionY = J1 < J2 ? 1 : -1;
 
-        dI = Math.abs(I2 - I1);
-        dJ = Math.abs(J1 - J2);
-
-        if (dI >= dJ) {
-
-            if (I1 > I2) {
-                temp = I2;
-                I2 = I1;
-                I1 = temp;
-                temp = J2;
-                J2 = J1;
-                J1 = temp;
-            }
-
-            d = 2 * dJ - dI;
-            delta1 = 2 * dJ;
-            delta2 = 2 * (dJ - dI);
-            j = J1;
-            for (i = I1; i < I2; ++i) {
+        if (dI > dJ) {
+            int d = 2 * dJ - dI;
+            int j = J1;
+            for (int i = I1; i != I2; i += directionX) {
                 graphics.fillRect(i, j, 3, 3);
                 if (d >= 0) {
-                    j--;
-                    d += delta2;
-                } else {
-                    d += delta1;
+                    j += directionY;
+                    d -= 2 * dI;
                 }
+                d += 2 * dJ;
             }
-        }
-        else {
-
-            if (J1 > J2) {
-                temp = I2;
-                I2 = I1;
-                I1 = temp;
-                temp = J2;
-                J2 = J1;
-                J1 = temp;
-            }
-
-            d = 2 * dI - dJ;
-            delta1 = 2 * dI;
-            delta2 = 2 * (dI - dJ);
-            i = I1;
-            for (j = J1; j < J2; ++j) {
+        } else {
+            int d = 2 * dI - dJ;
+            int i = I1;
+            for (int j = J1; j != J2; j += directionY) {
                 graphics.fillRect(i, j, 3, 3);
                 if (d >= 0) {
-                    i--;
-                    d += delta2;
-                } else {
-                    d += delta1;
+                    i += directionX;
+                    d -= 2 * dJ;
                 }
+                d += 2 * dI;
             }
         }
+        graphics.fillRect(I2, J2, 3, 3);
     }
 
     public static void main(String[] arg) {
